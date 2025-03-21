@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
     this.noOfTubes = event.noOfTubes;
     this.noOfEmptyTubes = event.noOfEmptyTubes;
     this.swaps = event.swaps;
+    this.isWin = false;
     this.ngOnInit();
   }
 }
