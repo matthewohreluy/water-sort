@@ -1,0 +1,72 @@
+  <div class="container">
+    <h3>Moves: {{playerService.playerMoves}}</h3>
+  <!-- No of Tubes -->
+  <form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
+    <!-- No of Tubes -->
+    <div class="form-group">
+      <label for="noOfTubes" class="form-label">Number of Tubes: </label>
+      <input
+        type="number"
+        class="form-control"
+        id="noOfTubes"
+        placeholder="Enter Number of Tubes"
+        formControlName="noOfTubes"
+        min="2"
+        max="16"
+      />
+      <small *ngIf="hasError('noOfTubes')" class="error">
+        Must be between 2 and 16.
+      </small>
+    </div>
+
+    <!-- No of Empty Tubes -->
+    <div class="form-group">
+      <label for="noOfEmptyTubes" class="form-label">Number of Empty Tubes: </label>
+      <input
+        type="number"
+        class="form-control"
+        id="noOfEmptyTubes"
+        placeholder="Enter Number of Empty Tubes"
+        formControlName="noOfEmptyTubes"
+        min="1"
+        max="2"
+      />
+      <small *ngIf="hasError('noOfEmptyTubes')" class="error">
+        Must be between 1 and 2.
+      </small>
+    </div>
+
+    <!-- Swaps -->
+    <div class="form-group">
+      <label for="swaps" class="form-label">Swaps: </label>
+      <input
+        type="number"
+        class="form-control"
+        id="swaps"
+        placeholder="Enter Swaps"
+        formControlName="swaps"
+        min="1"
+        max="1000"
+      />
+      <small *ngIf="hasError('swaps')" class="error">
+        Must be between 1 and 1000.
+      </small>
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="btn-primary" [disabled]="gameForm.invalid">
+        Reset Game
+      </button>
+    </div>
+  </form>
+
+  <h2 *ngIf="isWin">You Win</h2>
+  </div>
+
+
+
+
+
+
+
+

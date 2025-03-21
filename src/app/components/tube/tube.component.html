@@ -1,0 +1,21 @@
+
+<div class="tube-container">
+
+    <a class="tube" (click)="onTubeClick()" [class.active]="data.isActive">
+      <div class="liquid" [style.background]="colors[data.contents[0]]">
+        <!-- {{data.contents[0]}} -->
+      </div>
+      <div class="liquid" [style.background]="colors[data.contents[1]]">
+        <!-- {{data.contents[1]}} -->
+      </div>
+      <div class="liquid" [style.background]="colors[data.contents[2]]">
+        <!-- {{data.contents[2]}} -->
+      </div>
+      <div class="liquid" [style.background]="colors[data.contents[3]]">
+        <!-- {{data.contents[3]}} -->
+      </div>
+    </a>
+
+</div>
+
+

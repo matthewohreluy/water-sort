@@ -1,0 +1,68 @@
+.container{
+width: 100%;
+height: 100%;
+background-color: hsl(225, 53%, 79%); /* Darker blue */
+box-shadow: 0px 20px 20px -15px hsl(228, 45%, 44%);
+padding: 16px;
+  h3{
+    font-weight: 900;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  form{
+    .form-group{
+      margin-bottom:8px;
+      label{
+        display: block;
+      }
+      input{
+        padding: 4px 8px;
+        width: 200px;
+      }
+    }
+
+    .btn-group{
+      height: 90px;
+      width: 300px;
+      margin: 24px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      .btn-primary{
+        width: 100%;
+        padding: 10px 0;
+        color:  hsl(225, 100%, 98%);
+        background: rgb(56,42,225);
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 16px;
+        box-shadow: 0px 20px 20px -15px rgb(56,42,225);
+        &:hover{
+          color:  rgb(252, 250, 255);
+          background: rgb(40, 30, 170);
+          cursor: pointer;
+        }
+        &.danger{
+          color: hsl(0, 100%, 98%); /* Very light red for text */
+          background: rgb(225, 42, 42); /* Bright red */
+          box-shadow: 0px 20px 20px -15px rgba(225, 42, 42, 0.7); /* Softer red shadow */
+          &:hover{
+            color: rgb(255, 245, 245); /* Slightly off-white for contrast */
+            background: rgb(190, 30, 30); /* Darker red for a rich hover effect */
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+h2{
+  font-weight: 900;
+    text-align: center;
+    margin: 20px;
+    font-size: 30px;
+}
