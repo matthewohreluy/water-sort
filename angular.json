@@ -19,7 +19,7 @@
           "options": {
             "outputPath": "dist/water-sort",
             "index": "src/index.html",
-            "browser": "",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
