@@ -29,10 +29,10 @@
         placeholder="Enter Number of Empty Tubes"
         formControlName="noOfEmptyTubes"
         min="1"
-        max="2"
+        max="3"
       />
       <small *ngIf="hasError('noOfEmptyTubes')" class="error">
-        Must be between 1 and 2.
+        Must be between 1 and 3.
       </small>
     </div>
 
@@ -53,6 +53,15 @@
       </small>
     </div>
 
+    <div class="form-group">
+      <label for="gameMode" class="form-label">Game Mode: </label>
+      <select class="form-control" id="gameMode" formControlName="gameMode">
+        <option [value]="false">Easy</option>
+        <option [value]="true">Hard</option>
+      </select>
+    </div>
+
+
     <div class="btn-group">
       <button type="submit" class="btn-primary" [disabled]="gameForm.invalid">
         Reset Game
@@ -61,6 +70,12 @@
   </form>
 
   <h2 *ngIf="isWin">You Win</h2>
+
+  <div class="btn-group">
+    <button type="button" class="btn-primary danger" (click)="undo()">
+      Undo
+    </button>
+  </div>
   </div>
 
 

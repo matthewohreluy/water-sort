@@ -1,8 +1,9 @@
 import { PlayerService } from './../../player.service';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DEFAULT_NOOFEMPTYTUBES, DEFAULT_NOOFTUBES, DEFAULT_SWAPS } from '../../constants/default';
+import { DEFAULT_DIFFICULTY, DEFAULT_NOOFEMPTYTUBES, DEFAULT_NOOFTUBES, DEFAULT_SWAPS } from '../../constants/default';
 import { NgIf } from '@angular/common';
+import { IGameForm } from './side-panel.interface';
 
 @Component({
   selector: 'app-side-panel',
@@ -13,7 +14,8 @@ import { NgIf } from '@angular/common';
 export class SidePanelComponent {
   gameForm: FormGroup;
   @Input() isWin: boolean = false;
-  @Output() resetClickEvent: EventEmitter<{noOfTubes: number, noOfEmptyTubes: number, swaps: number}> = new EventEmitter<{noOfTubes: number, noOfEmptyTubes: number, swaps: number}>();
+  @Output() resetClickEvent: EventEmitter<IGameForm> = new EventEmitter<IGameForm>();
+  @Output() undoClickEvent: EventEmitter<string> = new EventEmitter<string>();
 
   playerService = inject(PlayerService);
 
@@ -25,12 +27,13 @@ export class SidePanelComponent {
       ],
       noOfEmptyTubes: [
         DEFAULT_NOOFEMPTYTUBES,
-        [Validators.required, Validators.min(1), Validators.max(2)]
+        [Validators.required, Validators.min(1), Validators.max(3)]
       ],
       swaps: [
         DEFAULT_SWAPS,
-        [Validators.required, Validators.min(1), Validators.max(1000)]
-      ]
+        [Validators.required, Validators.min(1), Validators.max(100)]
+      ],
+      gameMode: [DEFAULT_DIFFICULTY]
     });
   }
 
@@ -42,5 +45,9 @@ export class SidePanelComponent {
 
   onSubmit(){
     this.resetClickEvent.emit(this.gameForm.value)
+  }
+
+  undo(){
+    this.undoClickEvent.emit('')
   }
 }

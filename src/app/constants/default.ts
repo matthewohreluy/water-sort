@@ -1,8 +1,9 @@
 import { ITube } from "../components/tube/tube.interface";
 
-export const DEFAULT_NOOFTUBES: number = 15;
+export const DEFAULT_NOOFTUBES: number = 3;
 export const DEFAULT_NOOFEMPTYTUBES: number = 1;
 export const DEFAULT_SWAPS: number = 100;
+export const DEFAULT_DIFFICULTY: boolean = false;
 export const DEFAULT_COLORS: string[] =[
   "transparent",
   "#FF073A", // 🔴 Neon Red

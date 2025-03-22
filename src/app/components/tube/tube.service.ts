@@ -1,18 +1,75 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { ITube } from "./tube.interface";
-import { COLOR_CONTENT } from "../../constants/default";
+import { COLOR_CONTENT, DEFAULT_DIFFICULTY, DEFAULT_NOOFEMPTYTUBES, DEFAULT_NOOFTUBES, DEFAULT_SWAPS } from "../../constants/default";
+import { MathService } from "../../math.service";
+import { IGameForm } from "../side-panel/side-panel.interface";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TubeService{
+  // tubes
+  tubeData: ITube[] = [];
+
+  moveStack: [ITube,ITube][]= [];
+
+  // CONFIGS
+  noOfTubes: number = DEFAULT_NOOFTUBES;
+  noOfEmptyTubes: number = DEFAULT_NOOFEMPTYTUBES;
+  swaps: number = DEFAULT_SWAPS;
+  isHardSwap: boolean = DEFAULT_DIFFICULTY;
+
+  mathService = inject(MathService);
+
+  public addMoveToStack(tube1: ITube, tube2: ITube){
+    if(this.tubeIsEmpty(tube1) || this.tubeIsFull(tube2) || this.isSameTube(tube1,tube2) || !this.isFit(tube1,tube2) || !this.checkTubeHaveSameColor(tube1,tube2)) return;
+    this.moveStack.push([tube1, tube2]);
+  }
+
+  public undo(){
+    // get value from moveStack
+    if(this.moveStack.length === 0) return;
+    const lastItem: [ITube,ITube] = JSON.parse(JSON.stringify(this.moveStack.pop()));
+    lastItem[0].isActive = false;
+    lastItem[1].isActive = false;
+
+
+    // update tubeData
+    let index0 = this.tubeData.findIndex(tube=>tube.id === lastItem[0].id);
+    let index1 = this.tubeData.findIndex(tube=>tube.id === lastItem[1].id);
+    this.tubeData[index0] = lastItem[0];
+    this.tubeData[index1] = lastItem[1];
+  }
+
+  public generateTubes(){
+    this.tubeData = Array.from({length: this.noOfTubes + this.noOfEmptyTubes}, (_, i)=>({
+      id: i + 1,
+      contents: this.noOfTubes > i ? [i+1,i+1,i+1,i+1] : [0,0,0,0],
+      isActive: false
+    }))
+  }
+
+  public randomizeTubeData(){
+    for(let x = 0; x<this.swaps; x++){
+      let index1 = this.mathService.randomize(0,3);
+      let index2 = this.mathService.randomize(0,3);
+      if(!this.isHardSwap) index1 = index2
+      this.swap(
+        this.tubeData[this.mathService.randomize(0,this.noOfTubes-1)],
+        this.tubeData[this.mathService.randomize(0,this.noOfTubes-1)],
+        index1,index2)
+     }
+  }
+
+  public resetValues(formData: IGameForm){
+    this.tubeData = [];
+    this.noOfTubes = formData.noOfTubes;
+    this.noOfEmptyTubes = formData.noOfEmptyTubes;
+    this.swaps = formData.swaps;
+    this.isHardSwap =formData.gameMode;
+  }
 
   fill(tube1: ITube, tube2: ITube){
-    // validations
-    // if tube2 is full, cannot fill
-    // if tube 1 is empty, cannot pour
-    // if tube is the same
-
   if(this.tubeIsEmpty(tube1) || this.tubeIsFull(tube2) || this.isSameTube(tube1,tube2) || !this.isFit(tube1,tube2) || !this.checkTubeHaveSameColor(tube1,tube2)) return;
 
    const liquid = this.liquidToFill(tube1);
@@ -24,10 +81,10 @@ export class TubeService{
     return this.checkWin(tubes);
   }
 
-  swap(tube1: ITube, tube2: ITube, index: 0|1|2|3){
-    let temp = JSON.parse(JSON.stringify(tube1.contents[index]));
-    tube1.contents[index] = JSON.parse(JSON.stringify(tube2.contents[index]));
-    tube2.contents[index] = temp;
+  swap(tube1: ITube, tube2: ITube, index1: 0|1|2|3, index2: 0|1|2|3){
+    let temp = JSON.parse(JSON.stringify(tube1.contents[index1]));
+    tube1.contents[index1] = JSON.parse(JSON.stringify(tube2.contents[index2]));
+    tube2.contents[index2] = temp;
   }
 
   private checkWin(tubes: ITube[]): boolean{

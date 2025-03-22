@@ -1,13 +1,16 @@
 <div class="page-container">
   <div class="left-container">
     <div class="tube-container">
-      @for (tube of tubeData; track tube.id) {
+      @for (tube of tubeService.tubeData; track tube.id) {
         <app-tube [data]="tube" (tubeClickEvent)="tubeClicked($event)"/>
       }
     </div>
   </div>
   <div class="right-container">
-    <app-side-panel (resetClickEvent)="resetClicked($event)" [isWin]="isWin"/>
+    <app-side-panel
+    (undoClickEvent)="undoClicked()"
+    (resetClickEvent)="resetClicked($event)"
+    [isWin]="playerService.isWin"/>
   </div>
 
 </div>

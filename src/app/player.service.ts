@@ -8,6 +8,8 @@ import { ITube } from "./components/tube/tube.interface";
 export class PlayerService{
   playerChoice: ITube | null = null;
   playerMoves: number = 0;
+  isWin: boolean = false;
+
 
   public clear(){
     this.playerChoice = null;
@@ -17,5 +19,9 @@ export class PlayerService{
     this.playerMoves++;
   }
 
+  public resetValues(){
+    this.isWin = false;
+    this.playerMoves = 0;
+  }
 
 }
