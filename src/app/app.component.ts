@@ -5,6 +5,8 @@ import { TubeService } from './components/tube/tube.service';
 import { PlayerService } from './player.service';
 import { SidePanelComponent } from './components/side-panel/side-panel.component';
 import { IGameForm } from './components/side-panel/side-panel.interface';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, first } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +20,36 @@ export class AppComponent implements OnInit {
 
   tubeService = inject(TubeService);
   playerService = inject(PlayerService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    // generate tubes
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      const tubeDataParam = this.route.snapshot.queryParams['tubeData'];
+
+      if (tubeDataParam) {
+        console.log("Tube Data Found After Navigation:", tubeDataParam);
+        try {
+          this.tubeService.tubeData = JSON.parse(decodeURIComponent(tubeDataParam));
+        } catch (error) {
+          console.error("Error parsing tubeData:", error);
+        }
+      } else {
+        console.log("No tubeData in URL, generating new data...");
+        this.fillTubes();
+      }
+    });
+  }
+
+  fillTubes(){
     this.tubeService.generateTubes();
     this.tubeService.randomizeTubeData();
+
+    // Encode and update the URL
+    this.router.navigate([], {
+      queryParams: { tubeData: encodeURIComponent(JSON.stringify(this.tubeService.tubeData)) },
+      queryParamsHandling: 'merge',
+    });
   }
 
   undoClicked(){
@@ -53,6 +80,6 @@ export class AppComponent implements OnInit {
   resetClicked(event: IGameForm){
     this.tubeService.resetValues(event);
     this.playerService.resetValues();
-    this.ngOnInit();
+    this.fillTubes();
   }
 }
