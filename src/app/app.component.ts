@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
       if (tubeDataParam) {
         console.log("Tube Data Found After Navigation:", tubeDataParam);
         try {
-          this.tubeService.tubeData = JSON.parse(tubeDataParam);
+          this.tubeService.tubeData = JSON.parse(tubeDataParam); //JSON.parse(decodeURIComponent(tubeDataParam));
         } catch (error) {
           console.error("Error parsing tubeData:", error);
         }
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
 
     // Encode and update the URL
     this.router.navigate([], {
-      queryParams: { tubeData: JSON.stringify(this.tubeService.tubeData) },
+      queryParams: { tubeData: JSON.stringify(this.tubeService.tubeData) }, //{ tubeData: encodeURIComponent(JSON.stringify(this.tubeService.tubeData)) },
       queryParamsHandling: 'merge',
     });
   }
